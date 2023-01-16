@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FinishingDoor : Door
@@ -20,12 +20,12 @@ public class FinishingDoor : Door
         }
         else
         {
-            int levelNumber = System.Convert.ToInt32(EditorSceneManager.GetActiveScene().name.Replace("Level", ""));
+            int levelNumber = System.Convert.ToInt32(SceneManager.GetActiveScene().name.Replace("Level", ""));
             if (levelNumber >= PlayerPrefs.GetInt("levelReached"))
             {
                 PlayerPrefs.SetInt("levelReached", levelNumber + 1);
             }
-            EditorSceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("Menu");
         }
     }
 
@@ -34,12 +34,12 @@ public class FinishingDoor : Door
         if (PlayerPrefs.GetInt(requiredKey) == 1)
         {
             PlayerPrefs.SetInt(requiredKey, 0);
-            int levelNumber = System.Convert.ToInt32(EditorSceneManager.GetActiveScene().name.Replace("Level", ""));
+            int levelNumber = System.Convert.ToInt32(SceneManager.GetActiveScene().name.Replace("Level", ""));
             if (levelNumber >= PlayerPrefs.GetInt("levelReached"))
             {
                 PlayerPrefs.SetInt("levelReached", levelNumber + 1);
             }
-            EditorSceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("Menu");
         }
         else
             print("Необходим ключ!");
