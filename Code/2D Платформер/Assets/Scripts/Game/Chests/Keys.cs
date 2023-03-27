@@ -9,22 +9,21 @@ public class Keys : MonoBehaviour
 
     public static Keys InstanceKeys { get; set; }
 
-    private void Start()
+    private void Awake()
     {
-        /*for (int i = 0; i <= keys.Length; i++)
-        {
-            toggleKeys = PlayerPrefs.GetInt(keys[i]) == 1 ? true : false;
-        }*/
+        if (InstanceKeys != null)
+            Destroy(this.gameObject);
+        else
+            InstanceKeys = this;
     }
 
     public void AddKey(string keyName)
     {
-        foreach(string key in keys)
+        foreach (string key in keys)
         {
-            if(keyName == key)
+            if (keyName == key)
             {
                 PlayerPrefs.SetInt(key, 1);
-                print(PlayerPrefs.GetInt(key));
                 break;
             }
         }

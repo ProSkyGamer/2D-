@@ -10,7 +10,7 @@ public class Worm : Entity
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject==Movement.Instance.gameObject)
+        if (collision.gameObject == Movement.Instance.gameObject)
         {
             Movement.Instance.GetDamage();
             isInCollision = true;
@@ -35,7 +35,9 @@ public class Worm : Entity
 
     private IEnumerator PeriodicalDamage()
     {
-        yield return new WaitForSeconds(1.5f);
+        float delayBetwenDamage = 1.5f;
+        yield return new WaitForSeconds(delayBetwenDamage);
+
         if (isTakingDamage)
             Movement.Instance.GetDamage();
         isTakingDamage = false;

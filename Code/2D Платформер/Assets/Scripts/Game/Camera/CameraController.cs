@@ -5,13 +5,14 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform followingObject;
+    [SerializeField] private float cameraYOffest = 2f;
+    private const float CAMERA_Z_OFFSET = -10f;
     private Vector3 followingObjectPosition;
     private bool isCameraFollowing = true;
 
-    public static CameraController CameraControl { get; set; }
-
     private void Awake()
     {
+        //Если объект не установлен, находим его по классу
         if (!followingObject)
             followingObject = FindObjectOfType<Movement>().transform;
         TogglePlayerPosition();
@@ -40,8 +41,8 @@ public class CameraController : MonoBehaviour
         if (followingObject)
         {
             followingObjectPosition = followingObject.position;
-            followingObjectPosition.z = -10f;
-            followingObjectPosition.y += 2f;
+            followingObjectPosition.z = CAMERA_Z_OFFSET;
+            followingObjectPosition.y += cameraYOffest;
         }
     }
 }

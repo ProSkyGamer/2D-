@@ -4,22 +4,24 @@ using UnityEngine;
 
 public class JumpingPad : MonoBehaviour
 {
-    [SerializeField] private float increasedJumpHeight;
+    [SerializeField] private float increasedJumpForce;
+
+    private float prevJumpForce;
 
     private void Start()
     {
-        PlayerPrefs.SetFloat("prevJumpForce", Movement.Instance.jumpForce);
+        prevJumpForce =  Movement.Instance.jumpForce;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == Movement.Instance.gameObject)
         {
-            Movement.Instance.jumpForce = increasedJumpHeight;
+            Movement.Instance.jumpForce = increasedJumpForce;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Movement.Instance.jumpForce = PlayerPrefs.GetFloat("prevJumpForce");
+        Movement.Instance.jumpForce = prevJumpForce;
     }
 }

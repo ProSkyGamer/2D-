@@ -28,16 +28,17 @@ public class Movement : Entity
     
     private LayerMask terrain;
     private Rigidbody2D rb;
-    private Animator anim;
     private SpriteRenderer personSprite;
 
     private Vector3 dir;
     public static Movement Instance { get; set; }
 
-    private States State
+    private void Awake()
     {
-        get { return (States)anim.GetInteger("state"); }
-        set { anim.SetInteger("state", (int)value); }
+        if (Instance != null)
+            Destroy(this.gameObject);
+        else
+            Instance = this;
     }
 
     private void Start()
@@ -46,7 +47,6 @@ public class Movement : Entity
         health = lives;
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
         personSprite = GetComponentInChildren<SpriteRenderer>();
         terrain = LayerMask.GetMask("Terrain");
     }
@@ -69,7 +69,7 @@ public class Movement : Entity
             {
                 //Iddle Anim
                 if (isGrounded && !gameObject.GetComponent<AttackController>().isAttacking)
-                    State = States.Iddle;
+                    PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Iddle);
 
                 //Run
                 if (PlayerPrefs.GetInt("joystickEnabled") == 1)
@@ -116,11 +116,11 @@ public class Movement : Entity
         }
 
         //Dead Anim
-        else if (anim.GetInteger("state") != 7 && anim.GetInteger("state") != 8 && !isDead2)
+        else if (PlayerAnims.Instance.PlayerState != PlayerAnims.PlayerStates.Dead &&
+            PlayerAnims.Instance.PlayerState != PlayerAnims.PlayerStates.Death && !isDead2)
         {
-            State = States.Death;
+            PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Death);
             print("true");
-            print(anim.GetInteger("state") + " " + anim.GetInteger("state").GetType());
         }
     }
 
@@ -131,7 +131,7 @@ public class Movement : Entity
             CheckGround();
             if(transform.position.y < -30)
             {
-                State = States.Death;
+                PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Death);
                 Camera.main.GetComponent<CameraController>().StopCameraFollowing();
             }
         }
@@ -139,7 +139,8 @@ public class Movement : Entity
 
     private void Run(bool isJoystick)
     {
-        if (isGrounded) State = States.Run;
+        if (isGrounded)
+            PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Run);
 
         if (isJoystick)
             dir = transform.right * _joystick.Horizontal;
@@ -167,11 +168,11 @@ public class Movement : Entity
         {
             if (rb.velocity.y > 0)
             {
-                State = States.Jump;
+                PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Jump);
             }
             else
             {
-                State = States.Fall;
+                PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Fall);
             }
         }
     }
@@ -179,33 +180,22 @@ public class Movement : Entity
     public override void GetDamage()
     {
         health -= 1;
-        if (health < 1 && State != States.Dead && State != States.Death)
+        if (health < 1 && PlayerAnims.Instance.PlayerState != PlayerAnims.PlayerStates.Dead &&
+            PlayerAnims.Instance.PlayerState != PlayerAnims.PlayerStates.Death)
         {
             isDead = true;
             foreach (Image heart in hearts)
             {
                 heart.sprite = deadHeart;
             }
-            State = States.Death;
+            PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Death);
         }
     }
 
     private void OnDeath()
     {
-        State = States.Dead;
+        PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Dead);
         dead_Screen.gameObject.SetActive(true);
         isDead2 = true;
     }
-
-}
-
-public enum States
-{
-    Iddle,
-    Run,
-    Jump,
-    Fall,
-    Hit,
-    Death,
-    Dead
 }

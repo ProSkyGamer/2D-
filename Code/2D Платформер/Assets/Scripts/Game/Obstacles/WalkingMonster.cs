@@ -9,12 +9,11 @@ public class WalkingMonster : Entity
     private bool isInCollision = false;
     private bool isTakingDamage = false;
 
-    
+
     private Vector3 dir;
     private SpriteRenderer sprite;
 
     private Animator anim;
-
 
     private void Start()
     {
@@ -45,27 +44,22 @@ public class WalkingMonster : Entity
 
     private void Move()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * 0.1f + transform.right * dir.x * 0.1f, 0.1f);
+        float offset = 0.1f;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * offset + transform.right * dir.x * offset, offset);
 
         if (colliders.Length > 1)
         {
             dir *= -1f;
             sprite.flipX = dir.x < 0.0f;
         }
-        transform.position = Vector3.MoveTowards(transform.position ,transform.position + dir, Time.deltaTime*speed);
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, Time.deltaTime * speed);
         State = States.Walk;
 
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 0.1f);
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject==Movement.Instance.gameObject)
+        if (collision.gameObject == Movement.Instance.gameObject)
         {
             Movement.Instance.GetDamage();
         }
@@ -80,7 +74,9 @@ public class WalkingMonster : Entity
 
     private IEnumerator PeriodicalDamage()
     {
-        yield return new WaitForSeconds(1.5f);
+        float delayBetwenDamage = 1.5f;
+        yield return new WaitForSeconds(delayBetwenDamage);
+
         if (isTakingDamage)
             Movement.Instance.GetDamage();
         isTakingDamage = false;

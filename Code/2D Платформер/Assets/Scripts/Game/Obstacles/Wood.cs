@@ -20,7 +20,7 @@ public class Wood : Entity
 
     private void Update()
     {
-        if(isInCollision && !isTakingDamage)
+        if (isInCollision && !isTakingDamage)
         {
             StartCoroutine(PeriodicalDamage());
             isTakingDamage = true;
@@ -36,8 +36,10 @@ public class Wood : Entity
 
     private IEnumerator PeriodicalDamage()
     {
-        yield return new WaitForSeconds(1.5f);
-        if(isTakingDamage)
+        float delayBetwenDamage = 1.5f;
+        yield return new WaitForSeconds(delayBetwenDamage);
+
+        if (isTakingDamage)
             Movement.Instance.GetDamage();
         isTakingDamage = false;
     }

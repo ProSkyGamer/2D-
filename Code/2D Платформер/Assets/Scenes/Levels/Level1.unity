@@ -3400,6 +3400,7 @@ GameObject:
   - component: {fileID: 417028812}
   - component: {fileID: 417028811}
   - component: {fileID: 417028810}
+  - component: {fileID: 417028816}
   - component: {fileID: 417028814}
   - component: {fileID: 417028815}
   m_Layer: 6
@@ -3570,6 +3571,18 @@ MonoBehaviour:
   transformPostionsRight: []
   transformPostionsLeft: []
   isAttacking: 0
+--- !u!114 &417028816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417028809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22bac686508f7aa4ba6200cb67069738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &421097993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4157,7 +4170,6 @@ MonoBehaviour:
   requiredKey: 
   _canvasButton: {fileID: 290053819}
   _canvasMenu: {fileID: 1371871729}
-  isNeedChangeStats: 0
   teleportPosition: {fileID: 1204546670}
 --- !u!212 &517051260
 SpriteRenderer:
@@ -4251,6 +4263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followingObject: {fileID: 0}
+  cameraYOffest: 2
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -10639,7 +10652,6 @@ MonoBehaviour:
   requiredKey: 
   _canvasButton: {fileID: 951525750}
   _canvasMenu: {fileID: 1824473682}
-  isNeedChangeStats: 0
   teleportPosition: {fileID: 1148780282}
 --- !u!212 &981631755
 SpriteRenderer:
@@ -10820,7 +10832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210872a0e74d6bd4380593354aeb691e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  increasedJumpHeight: 4
+  increasedJumpForce: 0
 --- !u!19719996 &988048931
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -21907,7 +21919,6 @@ MonoBehaviour:
   requiredKey: CaveKey1
   _canvasButton: {fileID: 1799655389}
   _canvasMenu: {fileID: 696310835}
-  isNeedChangeStats: 1
   doorToOpen: {fileID: 362994577}
 --- !u!212 &1767493301
 SpriteRenderer:
@@ -22033,7 +22044,6 @@ MonoBehaviour:
   requiredKey: CaveKey2
   _canvasButton: {fileID: 645724416}
   _canvasMenu: {fileID: 176555053}
-  isNeedChangeStats: 0
 --- !u!212 &1781461494
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -23590,7 +23600,6 @@ MonoBehaviour:
   requiredKey: CaveKey1
   _canvasButton: {fileID: 1618622238}
   _canvasMenu: {fileID: 1965045354}
-  isNeedChangeStats: 1
   doorToOpen: {fileID: 1500633329}
 --- !u!114 &2015867401
 MonoBehaviour:
@@ -24015,7 +24024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210872a0e74d6bd4380593354aeb691e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  increasedJumpHeight: 4
+  increasedJumpForce: 0
 --- !u!19719996 &2045890831
 TilemapCollider2D:
   m_ObjectHideFlags: 0

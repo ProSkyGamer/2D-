@@ -17,7 +17,6 @@ public class AttackController : MonoBehaviour
     [SerializeField] private List<Transform> transformPostionsRight;
     [SerializeField] private List<Transform> transformPostionsLeft;
 
-    private Animator anim;
     private LayerMask enemy;
 
     [HideInInspector] public bool isAttacking = false;
@@ -26,31 +25,24 @@ public class AttackController : MonoBehaviour
     private Transform attackPos;
     private float attackRange;
 
-    private States Attack
-    {
-        get { return (States)anim.GetInteger("attack"); }
-        set { anim.SetInteger("attack", (int)value); }
-    }
-
-    private States State
-    {
-        get { return (States)anim.GetInteger("state"); }
-        set { anim.SetInteger("state", (int)value); }
-    }
-
     private void Start()
     {
-        anim = GetComponent<Animator>();
         for (int i = 1; i < allTranformsRight.GetComponentsInChildren<Transform>().Length; i++)
         {
             transformPostionsRight.Add(allTranformsRight.GetComponentsInChildren<Transform>()[i]);
         }
+
         for (int i = 1; i < allTranformsLeft.GetComponentsInChildren<Transform>().Length; i++)
         {
             transformPostionsLeft.Add(allTranformsLeft.GetComponentsInChildren<Transform>()[i]);
         }
+
         attackPos = transformPostionsRight[0];
+
         enemy = LayerMask.GetMask("Monsters");
+
+        if (maxcomboAttack > 5)
+            maxcomboAttack = 5;
     }
 
     public void ChangeDirectionAtkToRight()
@@ -82,29 +74,10 @@ public class AttackController : MonoBehaviour
     {
         if (currAtk <= maxcomboAttack)
         {
-            if (currAtk == 1)
-            {
-                Attack = States.Attack1;
-            }
-            else if (currAtk == 2)
-            {
-                Attack = States.Attack2;
-            }
-            else if (currAtk == 3)
-            {
-                Attack = States.Attack3;
-            }
-            else if (currAtk == 4)
-            {
-                Attack = States.Attack4;
-            }
-            else if (currAtk == 5)
-            {
-                Attack = States.Attack5;
-            }
+            PlayerAnims.Instance.ChangeAttackState(currAtk);
+
             isAttacking = true;
             isRecharged = false;
-            anim.SetInteger("state", 100);
             print(attackPos.localPosition + " " + currAtk);
         }
     }
@@ -134,9 +107,9 @@ public class AttackController : MonoBehaviour
             ChangeAttack();
             StartCoroutine(AttackCoolDown());
         }
-        anim.SetInteger("state", 0);
-        anim.SetInteger("attack", 100);
         isAttacking = false;
+        PlayerAnims.Instance.ChangePlayerState((int)PlayerAnims.PlayerStates.Iddle);
+        
 
     }
 
@@ -162,14 +135,14 @@ public class AttackController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (attackPos != null && attackRange != null)
+        if (attackPos != null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackPos.position, attackRange);
         }
-        }
+    }
 
-        private IEnumerator AttackCoolDown()
+    private IEnumerator AttackCoolDown()
     {
         yield return new WaitForSeconds(0.3f);
         if (!isComboFull)
@@ -190,14 +163,5 @@ public class AttackController : MonoBehaviour
             ResetAttack(currAtk);
             isRecharged = true;
         }
-    }
-
-    public enum States
-    {
-        Attack1,
-        Attack2,
-        Attack3,
-        Attack4,
-        Attack5,
     }
 }

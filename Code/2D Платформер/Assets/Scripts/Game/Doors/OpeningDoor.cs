@@ -5,28 +5,26 @@ using UnityEngine.UI;
 
 public class OpeningDoor : Door
 {
-
     [SerializeField] private GameObject doorToOpen;
-
 
     public void OnDoorOpen()
     {
-        
         if (isKeyRequired)
         {
-            GameObject.FindObjectOfType<Movement>().menuOpened = true;
+            Movement.Instance.menuOpened = true;
             _canvasMenu.SetActive(true);
-            _canvasMenu.GetComponentInChildren<Text>().text = "Вы уверены что хотите использовать " + requiredKey + ", чтобы открыть дверь?" +
-                "\n У вас есть " + PlayerPrefs.GetInt(requiredKey) + "/1 нужных ключей";
+            _canvasMenu.GetComponentInChildren<Text>().text = $"Вы уверены что хотите использовать {requiredKey}, чтобы открыть дверь?" +
+                $"\n У вас есть {PlayerPrefs.GetInt(requiredKey)} / 1 нужных ключей";
             if (PlayerPrefs.GetInt(requiredKey) == 0)
                 _canvasMenu.GetComponentInChildren<Button>().interactable = false;
         }
         else
         {
-            Destroy(gameObject);
             Destroy(doorToOpen);
-            if(isNeedChangeStats)
-                gameObject.GetComponent<ChangeSomeStats>().ChangeStats();
+            if (gameObject.TryGetComponent(out ChangeSomeStats changeSomeStats))
+                changeSomeStats.ChangeStats();
+            Destroy(gameObject);
+
 
         }
     }
@@ -35,19 +33,22 @@ public class OpeningDoor : Door
     {
         if (PlayerPrefs.GetInt(requiredKey) == 1)
         {
+            Destroy(doorToOpen);
+            if (gameObject.TryGetComponent(out ChangeSomeStats changeSomeStats))
+                changeSomeStats.ChangeStats();
             PlayerPrefs.SetInt(requiredKey, 0);
             Destroy(gameObject);
-            Destroy(doorToOpen);
-            if (isNeedChangeStats)
-                gameObject.GetComponent<ChangeSomeStats>().ChangeStats();
+
         }
-        GameObject.FindObjectOfType<Movement>().menuOpened = false;
+        Movement.Instance.menuOpened = false;
 
     }
 
     private void Update()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.7f, layer);
+        float interactableDistance = 0.7f;
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, interactableDistance, layer);
+
         if (collider.Length > 0)
         {
             _canvasButton.SetActive(true);

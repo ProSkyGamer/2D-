@@ -6,15 +6,14 @@ using UnityEngine.UI;
 
 public class FinishingDoor : Door
 {
-
     public void OnDoorOpen()
     {
         if (isKeyRequired)
         {
             GameObject.FindObjectOfType<Movement>().menuOpened = true;
             _canvasMenu.SetActive(true);
-            _canvasMenu.GetComponentInChildren<Text>().text = "Вы уверены что хотите использовать " + requiredKey + ", чтобы открыть дверь?" +
-                "<p> У вас есть " + PlayerPrefs.GetInt(requiredKey) + "/1 нужных ключей";
+            _canvasMenu.GetComponentInChildren<Text>().text = $"Вы уверены что хотите использовать {requiredKey}, чтобы открыть дверь?" +
+                $"\n У вас есть {PlayerPrefs.GetInt(requiredKey)} / 1 нужных ключей";
             if (PlayerPrefs.GetInt(requiredKey) == 0)
                 _canvasMenu.GetComponentInChildren<Button>().interactable = false;
         }
@@ -41,13 +40,13 @@ public class FinishingDoor : Door
             }
             SceneManager.LoadScene("Menu");
         }
-        else
-            print("Необходим ключ!");
     }
 
     private void Update()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.7f, layer);
+        float interactableDistance = 0.7f;
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, interactableDistance, layer);
+
         if (collider.Length > 0)
         {
             _canvasButton.SetActive(true);

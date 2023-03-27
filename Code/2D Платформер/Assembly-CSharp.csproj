@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\Game\Doors\FinishingDoor.cs" />
     <Compile Include="Assets\Scripts\Menu\Menu.cs" />
     <Compile Include="Assets\Materials\Prefabs\Joystick\Scripts\Joysticks\VariableJoystick.cs" />
+    <Compile Include="Assets\Scripts\Game\Player\PlayerAnims.cs" />
     <Compile Include="Assets\Scripts\Game\Obstacles\Wood.cs" />
     <Compile Include="Assets\Scripts\Game\Chests\Keys.cs" />
     <Compile Include="Assets\Materials\Prefabs\Joystick\Scripts\Joysticks\DynamicJoystick.cs" />

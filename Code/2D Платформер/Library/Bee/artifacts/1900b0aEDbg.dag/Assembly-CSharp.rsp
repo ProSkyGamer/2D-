@@ -392,6 +392,7 @@
 "Assets/Scripts/Game/Obstacles/Worm.cs"
 "Assets/Scripts/Game/Player/AttackController.cs"
 "Assets/Scripts/Game/Player/Movement.cs"
+"Assets/Scripts/Game/Player/PlayerAnims.cs"
 "Assets/Scripts/Game/ResetLevel.cs"
 "Assets/Scripts/Game/Terrain/JumpingPad.cs"
 "Assets/Scripts/Game/UI/Settings.cs"

@@ -12,10 +12,10 @@ public class Door : MonoBehaviour
     [SerializeField] protected GameObject _canvasButton;
     [SerializeField] protected GameObject _canvasMenu;
 
-    [SerializeField] protected bool isNeedChangeStats;
+    private const string PLAYER_LAYER_MASK = "Player";
 
     protected void Start()
     {
-        layer = LayerMask.GetMask("Player");
+        layer = LayerMask.GetMask(PLAYER_LAYER_MASK);
     }
 }

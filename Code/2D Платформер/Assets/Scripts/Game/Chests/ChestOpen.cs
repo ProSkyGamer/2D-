@@ -12,17 +12,18 @@ public class ChestOpen : MonoBehaviour
 
     public void OnChestOpen()
     {
-        GameObject.FindObjectOfType<Keys>().AddKey(keyName);
+        Keys.InstanceKeys.AddKey(keyName);
         Destroy(gameObject);
     }
 
     private void Update()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.7f, layer);
-        if(collider.Length > 0)
+        float interactableDistance = 0.7f;
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, interactableDistance, layer);
+        if (collider.Length > 0)
         {
             _canvas.SetActive(true);
-            if(Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 OnChestOpen();
             }
@@ -32,9 +33,10 @@ public class ChestOpen : MonoBehaviour
             _canvas.SetActive(false);
         }
     }
-    private void OnDrawGizmosSelected()
+
+    /*private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.5f);
-    }
+    }*/
 }

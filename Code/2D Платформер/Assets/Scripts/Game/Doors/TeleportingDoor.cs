@@ -25,8 +25,8 @@ public class TeleportingDoor : Door
         {
             GameObject.FindObjectOfType<Movement>().menuOpened = true;
             _canvasMenu.SetActive(true);
-            _canvasMenu.GetComponentInChildren<Text>().text = "Вы уверены что хотите использовать " + requiredKey + ", чтобы открыть дверь? " +
-                "<p> У вас есть " + PlayerPrefs.GetInt(requiredKey) + "/1 нужных ключей";
+            _canvasMenu.GetComponentInChildren<Text>().text = $"Вы уверены что хотите использовать {requiredKey}, чтобы открыть дверь?" +
+                $"\n У вас есть {PlayerPrefs.GetInt(requiredKey)} / 1 нужных ключей";
             if (PlayerPrefs.GetInt(requiredKey) == 0)
                 _canvasMenu.GetComponentInChildren<Button>().interactable = false;
         }
@@ -43,15 +43,17 @@ public class TeleportingDoor : Door
         {
             startShowing = true;
             PlayerPrefs.SetInt(requiredKey, 0);
-            if (isNeedChangeStats)
-                gameObject.GetComponent<ChangeSomeStats>().ChangeStats();
+            if (gameObject.TryGetComponent(out ChangeSomeStats changeSomeStats))
+                changeSomeStats.ChangeStats();
         }
 
     }
 
     private void Update()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.7f, layer);
+        float interactableDistance = 0.7f;
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, interactableDistance, layer);
+
         if (collider.Length > 0)
         {
             _canvasButton.SetActive(true);
@@ -68,7 +70,7 @@ public class TeleportingDoor : Door
 
     private void FixedUpdate()
     {
-        if(startShowing)
+        if (startShowing)
         {
             hiddenSceen.gameObject.SetActive(true);
             hiddenSceen.color = new Color(hiddenSceen.color.r, hiddenSceen.color.g,
@@ -81,7 +83,7 @@ public class TeleportingDoor : Door
                 StartCoroutine(DelayShowing());
             }
         }
-        else if(startHiding)
+        else if (startHiding)
         {
             hiddenSceen.color = new Color(hiddenSceen.color.r, hiddenSceen.color.g,
                 hiddenSceen.color.b, hiddenSceen.color.a - 0.05f);
@@ -92,14 +94,14 @@ public class TeleportingDoor : Door
                 GameObject.FindObjectOfType<Movement>().menuOpened = false;
             }
         }
-        
+
     }
 
     private IEnumerator DelayShowing()
     {
         yield return new WaitForSeconds(0.5f);
         startHiding = true;
-        if (isNeedChangeStats)
-            gameObject.GetComponent<ChangeSomeStats>().ChangeStats();
+        if (gameObject.TryGetComponent(out ChangeSomeStats changeSomeStats))
+            changeSomeStats.ChangeStats();
     }
 }
