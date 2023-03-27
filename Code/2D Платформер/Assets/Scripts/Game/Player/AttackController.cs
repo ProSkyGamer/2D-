@@ -162,11 +162,14 @@ public class AttackController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPos.position, attackRange);
-    }
+        if (attackPos != null && attackRange != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPos.position, attackRange);
+        }
+        }
 
-    private IEnumerator AttackCoolDown()
+        private IEnumerator AttackCoolDown()
     {
         yield return new WaitForSeconds(0.3f);
         if (!isComboFull)

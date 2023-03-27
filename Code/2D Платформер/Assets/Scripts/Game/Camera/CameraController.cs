@@ -4,41 +4,44 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Transform player;
-    private Vector3 pos;
-    private bool isFollowingCamera = true;
+    [SerializeField] private Transform followingObject;
+    private Vector3 followingObjectPosition;
+    private bool isCameraFollowing = true;
 
     public static CameraController CameraControl { get; set; }
 
     private void Awake()
     {
-        if (!player)
-            player = FindObjectOfType<Movement>().transform;
+        if (!followingObject)
+            followingObject = FindObjectOfType<Movement>().transform;
         TogglePlayerPosition();
-        transform.position = pos;
+        transform.position = followingObjectPosition;
     }
 
     private void Update()
     {
-        if (isFollowingCamera)
+        if (isCameraFollowing)
         {
             TogglePlayerPosition();
-            transform.position = Vector3.Lerp(new Vector3(transform.position.x,(transform.position.y+pos.y)/2,transform.position.z), pos, Time.deltaTime);
+            Vector3 newPosition = Vector3.Lerp(new Vector3(transform.position.x,
+                (transform.position.y + followingObjectPosition.y) / 2,
+                transform.position.z), followingObjectPosition, Time.deltaTime);
+            transform.position = newPosition;
         }
     }
 
     public void StopCameraFollowing()
     {
-        isFollowingCamera = false;
+        isCameraFollowing = false;
     }
 
     private void TogglePlayerPosition()
     {
-        if (player)
+        if (followingObject)
         {
-            pos = player.position;
-            pos.z = -10f;
-            pos.y += 2f;
+            followingObjectPosition = followingObject.position;
+            followingObjectPosition.z = -10f;
+            followingObjectPosition.y += 2f;
         }
     }
 }

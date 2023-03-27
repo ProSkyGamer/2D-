@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    public Button[] levels;
+    [SerializeField] private Button[] levels;
 
     private void Start()
     {
-        if(PlayerPrefs.GetInt("levelReached")==0)
-            PlayerPrefs.SetInt("levelReached", 1);
         int levelReached = PlayerPrefs.GetInt("levelReached");
+        if (levelReached == 0)
+            PlayerPrefs.SetInt("levelReached", 1);
+
         for (int i = 0; i < levels.Length; i++)
         {
             if (i + 1 > levelReached)
